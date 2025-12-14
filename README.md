@@ -245,7 +245,7 @@ For licensing inquiries, please contact: [Jin Kyu Kim, MD; jjk.kim@mail.utoronto
 - FontAwesome for icons
 - jQuery for JavaScript functionality
 - OpenAI for GPT-4 API and GPT-OSS
-- Georgi Gerganov and the GGML community for llama.cpp and model releases
+- **Georgi Gerganov and the GGML community for llama.cpp and model releases**
 
 ## Future Improvements
 
