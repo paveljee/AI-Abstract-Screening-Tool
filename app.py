@@ -200,7 +200,7 @@ async def screen_article_async(session: ClientSession, title: str, abstract: str
             headers={
                 "Authorization": f"Bearer {openai.api_key}"
             } if not use_llama_cpp else None,
-            timeout=ClientTimeout(total=60)
+            timeout=ClientTimeout(total=60 if not use_llama_cpp else 3600)
         ) as response:
             response.raise_for_status()
             result = await response.json()
