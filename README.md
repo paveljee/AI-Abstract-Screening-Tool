@@ -118,7 +118,7 @@ http://localhost:5000
 >   --model /path/to/gpt-oss-20b-mxfp4.gguf \
 >   --alias ggml-org/gpt-oss-20b-GGUF \
 >   --n-gpu-layers -1 \
->   --ctx-size 4096 \
+>   --ctx-size 8192 \
 >   --batch-size 1 \
 >   --threads 1 \
 >   --seed 42 \
