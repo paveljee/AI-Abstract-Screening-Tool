@@ -2,10 +2,13 @@
 
 A web-based application for screening academic articles from RIS files using AI-powered analysis. This tool helps researchers automate the article screening process for systematic reviews.
 
+> [!TIP]
+> Features specific to [this fork](https://github.com/paveljee/AI-Abstract-Screening-Tool) are formatted as tips or **in bold.**
+
 ## Features
 
 - Upload multiple RIS files via drag-and-drop or file selection
-- Automated article screening using GPT-4
+- Automated article screening using GPT-4 **or GPT-OSS (via llama.cpp)**
 - Duplicate detection and removal
 - Real-time progress tracking
 - Summary statistics
@@ -26,11 +29,20 @@ pip install tenacity
 pip install werkzeug
 ```
 
+> [!TIP]
+> Opt in for easier installation using `uv` package manager: [instructions](https://docs.astral.sh/uv/getting-started/installation/).
+
 ### Environment Setup
 Create a `.env` file in the project root directory with your OpenAI API key:
 ```
 OPENAI_API_KEY=your_api_key_here
 ```
+
+> [!TIP]
+> Set the API key to a string containing `llama` if you use llama.cpp inference:
+> ```
+> OPENAI_API_KEY=llama-server
+> ```
 
 ## Project Structure
 ```
@@ -57,10 +69,16 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
+> [!TIP]
+> Not needed if using `uv`.
+
 3. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
+
+> [!TIP]
+> Not needed if using `uv`.
 
 4. Create the uploads directory
 ```bash
@@ -79,10 +97,36 @@ echo "OPENAI_API_KEY=your_api_key_here" > .env
 python app.py
 ```
 
+> [!TIP]
+> Use `uv run python app.py` if you opted for `uv` installation.
+
 2. Open a web browser and navigate to:
 ```
 http://localhost:5000
 ```
+
+> [!TIP]
+> To enjoy local inference, ensure that your system aligns with minimal requirements by consulting this [guide](https://github.com/ggml-org/llama.cpp/discussions/15396).
+>
+> Next, install [llama.cpp](https://github.com/ggml-org/llama.cpp/) and download a model file (e.g., [ggml-org/gpt-oss-20b-GGUF](https://huggingface.co/ggml-org/gpt-oss-20b-GGUF/)), and run a `llama-server` command.
+>
+> Consider this sample configuration:
+> ```bash
+> llama-server \
+>   --host 0.0.0.0 \
+>   --port 8000 \
+>   --model /path/to/gpt-oss-20b-mxfp4.gguf \
+>   --alias ggml-org/gpt-oss-20b-GGUF \
+>   --n-gpu-layers -1 \
+>   --ctx-size 4096 \
+>   --batch-size 1 \
+>   --threads 1 \
+>   --seed 42 \
+>   --verbose \
+>   --flash-attn on \
+>   --jinja \
+>   --chat-template-kwargs '{"reasoning_effort": "high"}'
+>```
 
 3. Using the interface:
    - Enter your inclusion criteria in the text area
@@ -127,7 +171,7 @@ ER  -
    - Identifies duplicates
 
 3. Article Screening
-   - Analyzes each article using OpenAI's GPT-4
+   - Analyzes each article using OpenAI's GPT-4 **or GPT-OSS**
    - Applies inclusion criteria
    - Categorizes as Include/Exclude/Unclear
 
@@ -155,10 +199,10 @@ The application includes comprehensive error handling for:
 
 ## Limitations
 
-- Requires OpenAI API key
+- Requires OpenAI API key **or a running llama.cpp server**
 - Processing speed depends on API rate limits
 - Large files may take significant time to process
-- Internet connection required
+- Internet connection required **(for installation only if using llama.cpp)**
 
 ## Troubleshooting
 
@@ -168,7 +212,7 @@ The application includes comprehensive error handling for:
    - Ensure uploads directory exists and is writable
 
 2. If processing fails:
-   - Check OpenAI API key is valid
+   - Check OpenAI API key is valid **or llama-server is properly configured**
    - Verify internet connection
    - Look for errors in console logs
 
@@ -193,12 +237,15 @@ Key Restrictions:
 
 For licensing inquiries, please contact: [Jin Kyu Kim, MD; jjk.kim@mail.utoronto.ca]
 
+**For questions about [this fork](https://github.com/paveljee/AI-Abstract-Screening-Tool), please contact [@paveljee](https://github.com/paveljee)**
+
 ## Acknowledgments
 
 - Bootstrap for UI components
 - FontAwesome for icons
 - jQuery for JavaScript functionality
-- OpenAI for GPT-4 API
+- OpenAI for GPT-4 API and GPT-OSS
+- Georgi Gerganov and the GGML community for llama.cpp and model releases
 
 ## Future Improvements
 
