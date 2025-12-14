@@ -187,10 +187,11 @@ async def screen_article_async(session: ClientSession, title: str, abstract: str
 
     try:
         logging.debug(f"Sending request to OpenAI API for title: {title[:50]}...")
+        use_llama_cpp = 'llama' in str(openai.api_key).lower()
         async with session.post(
-            'https://api.openai.com/v1/chat/completions',
+            'https://api.openai.com' if not use_llama_cpp else 'http://localhost:8000' + '/v1/chat/completions',
             json={
-                "model": "gpt-4o-mini",
+                "model": "gpt-4o-mini" if not use_llama_cpp else "ggml-org/gpt-oss-20b-GGUF",
                 "messages": [
                     {"role": "system", "content": "You are an expert in systematic reviews, tasked with screening articles for inclusion."},
                     {"role": "user", "content": prompt}
@@ -198,7 +199,7 @@ async def screen_article_async(session: ClientSession, title: str, abstract: str
             },
             headers={
                 "Authorization": f"Bearer {openai.api_key}"
-            },
+            } if not use_llama_cpp else None,
             timeout=ClientTimeout(total=60)
         ) as response:
             response.raise_for_status()
